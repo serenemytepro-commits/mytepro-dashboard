@@ -34,7 +34,7 @@ jobs:
       - name: Password-protect dashboard
         env:
           STATICRYPT_PASSWORD: ${{ secrets.DASHBOARD_PASSCODE }}
-        run: npx --yes staticrypt output/index.html -d output
+        run: npx --yes staticrypt output/index.html -d output --short
 
       - name: Deploy to Netlify
         env:
