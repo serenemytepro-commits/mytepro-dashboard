@@ -21,10 +21,20 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Pull HubSpot data and rebuild dashboard
         env:
           HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
         run: python scripts/refresh.py
+
+      - name: Password-protect dashboard
+        env:
+          STATICRYPT_PASSWORD: ${{ secrets.DASHBOARD_PASSCODE }}
+        run: npx --yes staticrypt output/index.html -d output
 
       - name: Deploy to Netlify
         env:
