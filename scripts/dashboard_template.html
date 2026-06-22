@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MytePro · Executive BD Command Center</title>
+<style>
+:root{
+  --bg:#07090f;--surf:#0f1218;--surf2:#161b26;--surf3:#1c2133;
+  --border:#232839;--border2:#2d3450;
+  --gold:#c8a96e;--gold2:#e8c98e;
+  --green:#22c55e;--green2:#16a34a;
+  --amber:#f59e0b;--amber2:#d97706;
+  --red:#ef4444;--red2:#dc2626;
+  --blue:#3b82f6;--blue2:#2563eb;
+  --purple:#8b5cf6;--teal:#14b8a6;
+  --muted:#6b7280;--muted2:#4b5563;
+  --text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;min-height:100vh;}
+
+/* ── HEADER ── */
+.hdr{display:flex;align-items:center;padding:0 28px;height:56px;border-bottom:1px solid var(--border);background:var(--surf);gap:16px;}
+.hdr-mark{display:flex;align-items:center;gap:10px;}
+.hdr-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);}
+.hdr-brand{font-size:11px;font-weight:800;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+.hdr-divider{width:1px;height:20px;background:var(--border2);}
+.hdr-title{font-size:15px;font-weight:600;color:var(--text);}
+.hdr-badge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;background:#1a2035;color:var(--blue);border:1px solid #2a3555;letter-spacing:.5px;}
+.hdr-right{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.hdr-chip{font-size:10px;font-weight:600;padding:4px 10px;border-radius:4px;letter-spacing:.3px;}
+.chip-live{background:#0f2e1a;color:var(--green);border:1px solid #1a4a28;}
+.chip-date{background:var(--surf2);color:var(--muted);border:1px solid var(--border);}
+
+/* ── NAV ── */
+.nav{display:flex;background:var(--surf);border-bottom:1px solid var(--border);padding:0 28px;}
+.nav-btn{font-size:12px;font-weight:500;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;align-items:center;gap:7px;transition:all .15s;letter-spacing:.2px;}
+.nav-btn:hover{color:var(--text);}
+.nav-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.nav-btn .nav-num{font-size:9px;background:var(--surf2);border:1px solid var(--border);color:var(--muted);padding:1px 5px;border-radius:10px;font-weight:700;}
+.nav-btn.active .nav-num{background:#2a1f0a;border-color:#4a3820;color:var(--gold);}
+
+/* ── PAGES ── */
+.page{display:none;padding:22px 28px;min-height:calc(100vh - 112px);}
+.page.active{display:block;}
+
+/* ── KPI CARDS ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.kpi-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px;position:relative;overflow:hidden;}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.kpi-card.kpi-pipeline::before{background:linear-gradient(90deg,var(--blue),var(--purple));}
+.kpi-card.kpi-forecast::before{background:linear-gradient(90deg,var(--amber),var(--gold));}
+.kpi-card.kpi-won::before{background:linear-gradient(90deg,var(--green),var(--teal));}
+
+.kpi-card.kpi-coverage::before{background:linear-gradient(90deg,var(--gold),var(--amber));}
+.kpi-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.kpi-val{font-size:11px;font-weight:700;line-height:1.5;margin-bottom:6px;}
+.kpi-val div{margin-bottom:2px;}
+.kpi-sub{font-size:10px;color:var(--text3);}
+.kpi-trend{font-size:10px;font-weight:600;margin-top:6px;}
+.kpi-trend.up{color:var(--green);}
+.kpi-trend.down{color:var(--red);}
+
+/* ── SECTION HEADERS ── */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sec-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);display:flex;align-items:center;gap:8px;}
+.sec-title::after{content:'';display:block;width:40px;height:1px;background:var(--border2);}
+.sec-count{font-size:10px;color:var(--muted);background:var(--surf2);border:1px solid var(--border);padding:2px 8px;border-radius:10px;}
+
+/* ── FUNNEL ── */
+.funnel-wrap{display:flex;gap:8px;margin-bottom:20px;}
+.funnel-stage{flex:1;background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:14px 12px;position:relative;cursor:pointer;transition:border-color .15s;}
+.funnel-stage:hover{border-color:var(--border2);}
+.funnel-stage::after{content:'›';position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--border2);z-index:2;}
+.funnel-stage:last-child::after{display:none;}
+.fs-name{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.fs-count{font-size:28px;font-weight:700;line-height:1;margin-bottom:4px;}
+.fs-val{font-size:10px;color:var(--text3);line-height:1.5;}
+.fs-conv{font-size:9px;font-weight:600;margin-top:6px;padding-top:6px;border-top:1px solid var(--border);}
+
+/* ── GRID LAYOUTS ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
+
+/* ── CARDS ── */
+.card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:16px;}
+
+/* ── MARKET TABLE ── */
+.mkt-table{width:100%;border-collapse:collapse;}
+.mkt-table th{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;}
+.mkt-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.mkt-table tr:last-child td{border-bottom:none;}
+.mkt-table tr:hover td{background:var(--surf2);}
+.mkt-flag{font-size:16px;margin-right:6px;}
+.mkt-name{font-size:12px;font-weight:600;}
+
+/* ── LEADERBOARD ── */
+.lb-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);position:relative;}
+.lb-row:last-child{border-bottom:none;}
+.lb-rank{font-size:18px;font-weight:800;width:28px;text-align:center;}
+.lb-rank.r1{color:var(--gold);}
+.lb-rank.r2{color:var(--text2);}
+.lb-rank.r3{color:var(--amber);}
+.lb-info{flex:1;}
+.lb-name{font-size:13px;font-weight:600;margin-bottom:2px;}
+.lb-mkt{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);}
+.lb-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;min-width:400px;}
+.lb-stat{text-align:right;}
+.lb-stat-val{font-size:11px;font-weight:700;line-height:1;}
+.lb-stat-lbl{font-size:9px;color:var(--muted);margin-top:1px;}
+.lb-bar-wrap{width:60px;height:6px;background:var(--surf3);border-radius:3px;overflow:hidden;margin-top:6px;}
+.lb-bar{height:100%;border-radius:3px;}
+
+/* ── RISK SECTION ── */
+.risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.risk-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.risk-hdr{padding:12px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);}
+.risk-hdr.green{background:#0a1f10;border-bottom-color:#1a3a20;}
+.risk-hdr.amber{background:#1a1408;border-bottom-color:#3a2a10;}
+.risk-hdr.red{background:#1a0808;border-bottom-color:#3a1010;}
+.risk-title{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;}
+.risk-hdr.green .risk-title{color:var(--green);}
+.risk-hdr.amber .risk-title{color:var(--amber);}
+.risk-hdr.red .risk-title{color:var(--red);}
+.risk-count{margin-left:auto;font-size:18px;font-weight:800;}
+.risk-hdr.green .risk-count{color:var(--green);}
+.risk-hdr.amber .risk-count{color:var(--amber);}
+.risk-hdr.red .risk-count{color:var(--red);}
+.risk-item{padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.risk-item:last-child{border-bottom:none;}
+.risk-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.risk-dot.green{background:var(--green);}
+.risk-dot.amber{background:var(--amber);}
+.risk-dot.red{background:var(--red);}
+.risk-iname{font-size:11px;color:var(--text);flex:1;}
+.risk-days{font-size:10px;font-weight:700;white-space:nowrap;}
+.risk-owner{font-size:9px;color:var(--muted);white-space:nowrap;}
+
+/* ── BD JOURNEY ── */
+.bd-tabs{display:flex;gap:6px;margin-bottom:16px;}
+.bd-tab{font-size:12px;font-weight:600;padding:8px 20px;border-radius:6px;border:1px solid var(--border);background:var(--surf2);color:var(--muted);cursor:pointer;transition:all .15s;}
+.bd-tab:hover{border-color:var(--border2);color:var(--text);}
+.bd-tab.active{background:#2a1f0a;border-color:var(--gold);color:var(--gold);}
+
+.bd-summary{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;}
+.bd-stat{background:var(--surf);padding:12px 14px;}
+.bd-stat-lbl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.bd-stat-val{font-size:13px;font-weight:700;line-height:1.4;}
+
+/* ── STAGE COLUMNS ── */
+.stage-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.stage-col-wrap{background:var(--surf2);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.stage-col-hdr{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.stage-col-name{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.stage-col-meta{font-size:9px;color:var(--muted);}
+.stage-col-body{padding:8px;}
+.stage-col-stats{display:flex;gap:10px;padding:8px 14px;border-top:1px solid var(--border);background:var(--surf);}
+.stage-col-stat{text-align:center;}
+.stage-col-stat-v{font-size:11px;font-weight:700;}
+.stage-col-stat-l{font-size:8px;color:var(--muted);}
+
+/* ── ACCOUNT CARDS ── */
+.acc-card{background:var(--surf);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:6px;border-left:3px solid transparent;transition:border-color .15s;}
+.acc-card:last-child{margin-bottom:0;}
+.acc-card.risk-green{border-left-color:var(--green);}
+.acc-card.risk-amber{border-left-color:var(--amber);}
+.acc-card.risk-red{border-left-color:var(--red);}
+.acc-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px;line-height:1.3;}
+.acc-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.acc-amt{font-size:12px;font-weight:700;}
+.acc-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.3px;white-space:nowrap;}
+.badge-opp{background:#1a2035;color:var(--blue);}
+.badge-sol{background:#1a1f10;color:#84cc16;}
+.badge-neg{background:#2d1f0a;color:var(--amber);}
+.badge-sign{background:#0f2e1a;color:var(--green);}
+.badge-pay{background:#0d2020;color:var(--teal);}
+.badge-closed{background:#0d2020;color:var(--teal);}
+.badge-lost{background:#3d1515;color:var(--red);}
+.acc-days{font-size:10px;color:var(--text3);}
+.acc-close{font-size:10px;color:var(--text3);}
+.acc-owner{font-size:9px;color:var(--muted);}
+
+/* ── RISK BADGE ── */
+.rbadge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;}
+.rbadge.green{background:#0a1f10;color:var(--green);border:1px solid #1a3a20;}
+.rbadge.amber{background:#1a1408;color:var(--amber);border:1px solid #3a2a10;}
+.rbadge.red{background:#1a0808;color:var(--red);border:1px solid #3a1010;}
+
+/* ── STRATEGIC DEALS TABLE ── */
+.deals-tbl{width:100%;border-collapse:collapse;}
+.deals-tbl th{background:var(--surf2);color:var(--muted);font-size:9px;letter-spacing:1.2px;text-transform:uppercase;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;}
+.deals-tbl th:hover{color:var(--text);}
+.deals-tbl td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.deals-tbl tr:hover td{background:var(--surf2);}
+.deals-tbl tr:last-child td{border-bottom:none;}
+.deals-tbl-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.deal-name-cell{font-size:12px;font-weight:500;max-width:260px;}
+.sort-controls{display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap;}
+.sort-btn{font-size:11px;padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:var(--surf2);color:var(--muted);cursor:pointer;transition:all .15s;}
+.sort-btn:hover{border-color:var(--border2);color:var(--text);}
+.sort-btn.active{background:#2a1f0a;border-color:var(--gold);color:var(--gold);}
+
+/* ── GAP SECTION ── */
+.gap-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.gap-kpi{background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:14px 16px;text-align:center;}
+.gap-kpi-val{font-size:32px;font-weight:700;line-height:1;}
+.gap-kpi-lbl{font-size:10px;color:var(--muted);margin-top:4px;}
+.gap-tbl-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;max-height:320px;overflow-y:auto;}
+.gap-tbl{width:100%;border-collapse:collapse;}
+.gap-tbl th{background:var(--surf2);color:var(--muted);font-size:9px;letter-spacing:1.2px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);position:sticky;top:0;}
+.gap-tbl td{padding:8px 12px;border-bottom:1px solid var(--border);font-size:11px;}
+.gap-tbl tr:last-child td{border-bottom:none;}
+.gap-tbl tr:hover td{background:var(--surf2);}
+
+/* ── MISC ── */
+.empty{padding:24px;text-align:center;color:var(--muted);font-size:12px;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--surf);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.mkt-pill{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;}
+.pill-my{background:#1a2035;color:var(--blue);}
+.pill-idn{background:#201525;color:var(--purple);}
+.pill-sg{background:#0f2020;color:var(--teal);}
+.pill-au{background:#1a1520;color:#fb923c;}
+.divider{height:1px;background:var(--border);margin:16px 0;}
+@media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(2,1fr);}.stage-cols{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-mark">
+    <div class="hdr-dot"></div>
+    <div class="hdr-brand">MytePro</div>
+  </div>
+  <div class="hdr-divider"></div>
+  <div class="hdr-title">Executive BD Command Center</div>
+  <div class="hdr-badge">LIVE · HubSpot</div>
+  <div class="hdr-right">
+    <div class="hdr-chip chip-live">● Live Data</div>
+    <div class="hdr-chip chip-date" id="date-badge">REFRESH_DATE_PLACEHOLDER</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn active" onclick="showPage('overview',this)">
+    Executive Overview
+    <span class="nav-num" id="nav-n1">—</span>
+  </button>
+  <button class="nav-btn" onclick="showPage('journey',this)">
+    BD Journey
+    <span class="nav-num">3</span>
+  </button>
+  <button class="nav-btn" onclick="showPage('strategic',this)">
+    Strategic Deals
+    <span class="nav-num" id="nav-n3">20</span>
+  </button>
+  <button class="nav-btn" onclick="showPage('gap',this)">
+    Gap Analysis
+  </button>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     PAGE 1 — EXECUTIVE OVERVIEW
+════════════════════════════════════════════════════ -->
+<div class="page active" id="page-overview">
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid" id="kpi-strip"></div>
+
+  <!-- Funnel + Market side by side -->
+  <div class="grid-2">
+    <div>
+      <div class="sec-hdr">
+        <div class="sec-title">Sales Funnel</div>
+        <div class="sec-count" id="funnel-total">— active deals</div>
+      </div>
+      <div class="funnel-wrap" id="funnel"></div>
+    </div>
+    <div class="card">
+      <div class="sec-hdr" style="margin-bottom:10px">
+        <div class="sec-title">Market Performance</div>
+      </div>
+      <table class="mkt-table" id="mkt-table">
+        <thead><tr>
+          <th>Market</th><th>Pipeline</th><th>Forecast</th><th>Won (2026)</th><th>Deals</th>
+        </tr></thead>
+        <tbody id="mkt-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- BD Performance -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="sec-hdr" style="margin-bottom:12px;">
+      <div class="sec-title">BD Performance</div>
+      <div class="sec-count">Jamie · Andrew · Angie</div>
+    </div>
+    <div id="bd-perf"></div>
+  </div>
+
+  <!-- Business Risks -->
+  <div class="sec-hdr">
+    <div class="sec-title">Business Risks</div>
+    <div class="sec-count" id="risk-total">— accounts need attention</div>
+  </div>
+  <div class="risk-grid" id="risk-grid"></div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     PAGE 2 — BD JOURNEY
+════════════════════════════════════════════════════ -->
+<div class="page" id="page-journey">
+
+  <div class="bd-tabs">
+    <button class="bd-tab active" onclick="setBD('Angie Lim',this)">Angie Lim</button>
+    <button class="bd-tab" onclick="setBD('Jamie Roscom',this)">Jamie Roscom</button>
+    <button class="bd-tab" onclick="setBD('Andrew Ng',this)">Andrew Ng</button>
+  </div>
+
+  <div class="bd-summary" id="bd-summary"></div>
+
+  <div class="sec-hdr">
+    <div class="sec-title">Account Journey by Stage</div>
+  </div>
+  <div class="stage-cols" id="bd-stages"></div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     PAGE 3 — STRATEGIC DEALS
+════════════════════════════════════════════════════ -->
+<div class="page" id="page-strategic">
+
+  <div style="background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:14px;display:flex;gap:10px;align-items:center;">
+    <div style="font-size:18px">🎯</div>
+    <div style="font-size:11px;color:var(--text2);line-height:1.6;">Top <strong style="color:var(--text)">20 highest-value active opportunities</strong> across Jamie, Andrew, and Angie. Risk is calculated from days since last activity. Sort by any column.</div>
+  </div>
+
+  <div class="sort-controls">
+    <span style="font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">Sort by:</span>
+    <button class="sort-btn active" onclick="sortDeals('am',this)">Deal Value</button>
+    <button class="sort-btn" onclick="sortDeals('close',this)">Close Date</button>
+    <button class="sort-btn" onclick="sortDeals('dis',this)">Risk (Days)</button>
+    <button class="sort-btn" onclick="sortDeals('owner',this)">Owner</button>
+    <span style="margin-left:auto;font-size:11px;color:var(--muted)" id="strategic-count"></span>
+  </div>
+
+  <div class="deals-tbl-wrap">
+    <table class="deals-tbl">
+      <thead><tr>
+        <th onclick="sortDeals('n',this)">#</th>
+        <th onclick="sortDeals('n',this)">Account</th>
+        <th onclick="sortDeals('owner',this)">Owner</th>
+        <th onclick="sortDeals('stage',this)">Stage</th>
+        <th onclick="sortDeals('am',this)">Deal Value</th>
+        <th onclick="sortDeals('dis',this)">Days Active</th>
+        <th onclick="sortDeals('close',this)">Close Date</th>
+        <th onclick="sortDeals('risk',this)">Risk</th>
+      </tr></thead>
+      <tbody id="strategic-body"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     PAGE 4 — GAP ANALYSIS
+════════════════════════════════════════════════════ -->
+<div class="page" id="page-gap">
+
+  <!-- FLAGGED SECTION -->
+<div style="background:#1a0d00;border:2px solid var(--amber);border-radius:10px;padding:16px 20px;margin-bottom:20px;">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+    <div style="font-size:22px">⚠️</div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:var(--amber)">Flagged: In CRM — No 2026 Activity — Active Projects Found</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px;">Developers in HubSpot with confirmed upcoming launches 2026–2028 based on public filings, analyst reports, Bursa announcements. Reach out before a competitor does.</div>
+    </div>
+    <div style="margin-left:auto;font-size:28px;font-weight:800;color:var(--amber)" id="flag-count">—</div>
+  </div>
+  <div id="flagged-grid"></div>
+</div>
+
+<div class="gap-kpis" id="gap-kpis"></div>
+
+  <div class="grid-2">
+    <!-- Cold 90+ days -->
+    <div class="card">
+      <div class="sec-hdr" style="margin-bottom:10px;">
+        <div class="sec-title" style="color:var(--red)">Accounts Cold 90+ Days</div>
+        <div class="sec-count" id="cold-count">—</div>
+      </div>
+      <div class="gap-tbl-wrap">
+        <table class="gap-tbl">
+          <thead><tr><th>Account</th><th>Owner</th><th>Last Activity</th><th>Days Cold</th></tr></thead>
+          <tbody id="cold-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Won deals history -->
+    <div class="card">
+      <div class="sec-hdr" style="margin-bottom:10px;">
+        <div class="sec-title" style="color:var(--green)">Won Deals — 2026</div>
+        <div class="sec-count" id="won-count-gap">—</div>
+      </div>
+      <div class="gap-tbl-wrap">
+        <table class="gap-tbl">
+          <thead><tr><th>Account</th><th>Owner</th><th>Value</th><th>Close Date</th></tr></thead>
+          <tbody id="won-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Lost deals -->
+  <div class="sec-hdr" style="margin-bottom:10px;">
+    <div class="sec-title" style="color:var(--red)">Lost Deals — 2026</div>
+    <div class="sec-count" id="lost-count-gap">—</div>
+  </div>
+  <div class="deals-tbl-wrap">
+    <table class="deals-tbl">
+      <thead><tr><th>Account</th><th>Owner</th><th>Market</th><th>Value</th></tr></thead>
+      <tbody id="lost-body"></tbody>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>
+
+
+<!-- INJECT_DATE -->
+<script>
+/* INJECT_EXEC */
+/* INJECT_FLAGGED */
+
+// ── Global helpers ────────────────────────────────────────────────────────────
+function esc(s){ return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):''; }
+function fmt(n,d=0){ return n==null?'—':Number(n).toLocaleString('en',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function fmtAmt(n,cur){
+  if(n==null||n===undefined) return '—';
+  var c=cur||'MYR';
+  if(c==='IDR'){
+    if(n>=1000000000) return 'IDR '+fmt(n/1000000000,2)+'B';
+    if(n>=1000000)    return 'IDR '+fmt(n/1000000,1)+'M';
+    return 'IDR '+fmt(n,0);
+  }
+  if(n>=1000000) return c+' '+fmt(n/1000000,2)+'M';
+  if(n>=1000)    return c+' '+fmt(n/1000,1)+'K';
+  return c+' '+fmt(n,0);
+}
+function fmtFull(n,cur){ return (cur||'MYR')+' '+Math.round(n||0).toLocaleString('en'); }
+function mktPill(mk){
+  var cls={'Malaysia':'pill-my','Indonesia':'pill-idn','Singapore':'pill-sg','Australia':'pill-au'}[mk]||'pill-my';
+  return '<span class="mkt-pill '+cls+'">'+esc(mk)+'</span>';
+}
+function stageBadge(st){
+  var badges={'Opportunity':'badge-opp','Solution':'badge-sol','Discussion / Negotiation':'badge-neg','Deal Signed':'badge-sign','Payment':'badge-pay','Deal Closed':'badge-closed','Deal Lost':'badge-lost'};
+  return '<span class="acc-badge '+(badges[st]||'badge-opp')+'">'+esc(st)+'</span>';
+}
+function rbadge(risk){
+  if(risk==='green') return '<span class="rbadge green">● Healthy</span>';
+  if(risk==='amber') return '<span class="rbadge amber">◐ Watch</span>';
+  return '<span class="rbadge red">○ Critical</span>';
+}
+
+// ── Constants ─────────────────────────────────────────────────────────────────
+var TODAY = new Date('2026-06-21');
+var ACTIVE = EXEC.active;
+var WON    = EXEC.won;
+var LOST   = EXEC.lost;
+var META   = EXEC.meta;
+var OWNERS = ['Angie Lim','Jamie Roscom','Andrew Ng'];
+var ACTIVE_STAGES = ['Opportunity','Solution','Discussion / Negotiation'];
+
+var STAGE_COLOUR = {
+  'Opportunity':'#3b82f6','Solution':'#84cc16',
+  'Discussion / Negotiation':'#f59e0b',
+  'Deal Signed':'#22c55e','Payment':'#14b8a6',
+  'Deal Closed':'#14b8a6','Deal Lost':'#ef4444'
+};
+
+// ── Page switch ───────────────────────────────────────────────────────────────
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('page-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════
+//  PAGE 1 — EXECUTIVE OVERVIEW
+// ══════════════════════════════════════════════════════
+function initOverview(){
+  var pipe = ACTIVE.filter(function(d){return ACTIVE_STAGES.indexOf(d.stage)>-1;});
+  var won26 = WON.filter(function(d){return d.close>='2026-01-01';});
+
+  function sumCur(list,c){ return list.filter(function(d){return d.cur===c;}).reduce(function(a,d){return a+d.am;},0); }
+
+  var pipeMYR=sumCur(pipe,'MYR'), pipeIDR=sumCur(pipe,'IDR');
+  var fcMYR=pipe.filter(function(d){return d.cur==='MYR';}).reduce(function(a,d){return a+d.weighted;},0);
+  var fcIDR=pipe.filter(function(d){return d.cur==='IDR';}).reduce(function(a,d){return a+d.weighted;},0);
+  var wonMYR=sumCur(won26,'MYR'), wonIDR=sumCur(won26,'IDR');
+
+  // KPI strip
+  var kpis=[
+    {cls:'kpi-pipeline',lbl:'Total Pipeline',
+     val:'<div style="color:var(--blue);font-size:20px;font-weight:800">'+fmtAmt(pipeMYR,'MYR')+'</div>'+(pipeIDR>0?'<div style="color:var(--purple);font-size:16px;font-weight:700;margin-top:2px">'+fmtAmt(pipeIDR,'IDR')+'</div>':''),
+     sub:pipe.length+' active deals · All open opps (Jamie, Andrew, Angie)'},
+    {cls:'kpi-forecast',lbl:'Forecast Range',
+     val:'<div style="color:var(--amber);font-size:13px;font-weight:800">'+fmtAmt(fcMYR*0.80,'MYR')+' — '+fmtAmt(fcMYR,'MYR')+'</div>'+(fcIDR>0?'<div style="color:var(--gold);font-size:12px;font-weight:700;margin-top:4px">'+fmtAmt(fcIDR*0.80,'IDR')+' — '+fmtAmt(fcIDR,'IDR')+'</div>':''),
+     sub:'Conservative to weighted (stage prob)'},
+    {cls:'kpi-won',lbl:'Closed Won 2026',
+     val:'<div style="color:var(--green);font-size:20px;font-weight:800">'+fmtAmt(wonMYR,'MYR')+'</div>'+(wonIDR>0?'<div style="color:var(--teal);font-size:16px;font-weight:700;margin-top:2px">'+fmtAmt(wonIDR,'IDR')+'</div>':''),
+     sub:won26.length+' deals closed'},
+    {cls:'kpi-coverage',lbl:'Active Opportunities',
+     val:'<div style="color:var(--gold);font-size:32px;font-weight:800;line-height:1">'+pipe.length+'</div>',
+     sub:'MY + IDN pipeline'},
+  ];
+  document.getElementById('kpi-strip').innerHTML=kpis.map(function(k){
+    return '<div class="kpi-card '+k.cls+'"><div class="kpi-lbl">'+k.lbl+'</div><div class="kpi-val">'+k.val+'</div><div class="kpi-sub">'+k.sub+'</div></div>';
+  }).join('');
+
+  document.getElementById('nav-n1').textContent=pipe.length;
+
+  // Funnel
+  var stages=['Opportunity','Solution','Discussion / Negotiation'];
+  document.getElementById('funnel-total').textContent=pipe.length+' active deals';
+  document.getElementById('funnel').innerHTML=stages.map(function(st,i){
+    var g=pipe.filter(function(d){return d.stage===st;});
+    var myr=sumCur(g,'MYR'), idr=sumCur(g,'IDR');
+    var prob={'Opportunity':'20%','Solution':'33%','Discussion / Negotiation':'67%'}[st]||'';
+    var col=STAGE_COLOUR[st];
+    var valStr=(myr>0?fmtAmt(myr,'MYR'):'')+(myr>0&&idr>0?'<br>':'')+(idr>0?fmtAmt(idr,'IDR'):'')|| '—';
+    return '<div class="funnel-stage">'
+      +'<div class="fs-name" style="color:'+col+'">'+esc(st)+'</div>'
+      +'<div class="fs-count" style="color:'+col+'">'+g.length+'</div>'
+      +'<div class="fs-val">'+valStr+'</div>'
+      +'<div class="fs-conv" style="color:'+col+'">Prob '+prob+'</div>'
+      +'</div>';
+  }).join('');
+
+  // Market table
+  var mkts=[
+    {flag:'🇲🇾',name:'Malaysia',cur:'MYR',filter:function(d){return d.cur==='MYR';}},
+    {flag:'🇮🇩',name:'Indonesia',cur:'IDR',filter:function(d){return d.cur==='IDR';}},
+  ];
+  document.getElementById('mkt-body').innerHTML=mkts.map(function(m){
+    var mp=pipe.filter(m.filter), mw=won26.filter(m.filter);
+    var mf=mp.reduce(function(a,d){return a+d.weighted;},0);
+    return '<tr>'
+      +'<td><span class="mkt-flag">'+m.flag+'</span><span class="mkt-name">'+m.name+'</span></td>'
+      +'<td style="font-weight:700">'+fmtAmt(mp.reduce(function(a,d){return a+d.am;},0),m.cur)+'</td>'
+      +'<td style="font-weight:700;color:var(--amber)">'+fmtAmt(mf,m.cur)+'</td>'
+      +'<td style="font-weight:700;color:var(--green)">'+fmtAmt(mw.reduce(function(a,d){return a+d.am;},0),m.cur)+'</td>'
+      +'<td style="color:var(--text2)">'+mp.length+' active</td>'
+      +'</tr>';
+  }).join('');
+
+  // BD Performance (ranked)
+  var ranked=OWNERS.map(function(o){
+    var op=pipe.filter(function(d){return d.owner===o;});
+    var ow=won26.filter(function(d){return d.owner===o;});
+    var ol=LOST.filter(function(d){return d.owner===o;});
+    var pipeMYR_o=sumCur(op,'MYR'), pipeIDR_o=sumCur(op,'IDR');
+    var wonMYR_o=sumCur(ow,'MYR'), wonIDR_o=sumCur(ow,'IDR'), wonUSD_o=sumCur(ow,'USD');
+    var fcMYR_o=op.filter(function(d){return d.cur==='MYR';}).reduce(function(a,d){return a+d.weighted;},0);
+    var fcIDR_o=op.filter(function(d){return d.cur==='IDR';}).reduce(function(a,d){return a+d.weighted;},0);
+    var score=pipeMYR_o/1000+pipeIDR_o/56000+wonMYR_o/500;
+    return {o:o,op:op,ow:ow,ol:ol,pipeMYR_o:pipeMYR_o,pipeIDR_o:pipeIDR_o,wonMYR_o:wonMYR_o,wonIDR_o:wonIDR_o,wonUSD_o:wonUSD_o,fcMYR_o:fcMYR_o,fcIDR_o:fcIDR_o,score:score};
+  }).sort(function(a,b){return b.score-a.score;});
+
+  var maxScore=ranked[0].score||1;
+  document.getElementById('bd-perf').innerHTML=ranked.map(function(r,i){
+    var mkt=r.o==='Andrew Ng'?'Indonesia · IDR':'Malaysia · MYR';
+    var pipeStr=r.pipeIDR_o>0?fmtAmt(r.pipeIDR_o,'IDR'):fmtAmt(r.pipeMYR_o,'MYR');
+    var fcStr=r.pipeIDR_o>0?fmtAmt(r.fcIDR_o,'IDR'):fmtAmt(r.fcMYR_o,'MYR');
+    var wonStr=r.wonIDR_o>0?fmtAmt(r.wonIDR_o,'IDR'):(r.wonUSD_o>0?'USD '+fmt(r.wonUSD_o/1000,0)+'K':fmtAmt(r.wonMYR_o,'MYR'));
+    var barW=Math.round(r.score/maxScore*100);
+    var rankCol=i===0?'var(--gold)':i===1?'var(--blue)':'var(--purple)';
+    return '<div class="lb-row">'
+      +'<div class="lb-rank r'+(i+1)+'">'+(i+1)+'</div>'
+      +'<div class="lb-info">'
+        +'<div class="lb-name">'+esc(r.o)+'</div>'
+        +'<div class="lb-mkt">'+mkt+'</div>'
+        +'<div class="lb-bar-wrap" style="width:80px"><div class="lb-bar" style="width:'+barW+'%;background:'+rankCol+'"></div></div>'
+      +'</div>'
+      +'<div class="lb-stats">'
+        +'<div class="lb-stat"><div class="lb-stat-val" style="color:var(--blue)">'+pipeStr+'</div><div class="lb-stat-lbl">Pipeline</div></div>'
+        +'<div class="lb-stat"><div class="lb-stat-val" style="color:var(--amber)">'+fcStr+'</div><div class="lb-stat-lbl">Forecast</div></div>'
+        +'<div class="lb-stat"><div class="lb-stat-val" style="color:var(--green)">'+wonStr+'</div><div class="lb-stat-lbl">Won</div></div>'
+        +'<div class="lb-stat"><div class="lb-stat-val">'+r.op.length+'</div><div class="lb-stat-lbl">Deals</div></div>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+
+  // Risks
+  var stalled=ACTIVE.filter(function(d){return d.ds!=null&&d.ds>14&&ACTIVE_STAGES.indexOf(d.stage)>-1;});
+  var healthy=ACTIVE.filter(function(d){return d.ds!=null&&d.ds<=14&&ACTIVE_STAGES.indexOf(d.stage)>-1;});
+  var critical60=ACTIVE.filter(function(d){return d.ds!=null&&d.ds>60&&ACTIVE_STAGES.indexOf(d.stage)>-1;});
+  document.getElementById('risk-total').textContent=(stalled.length+critical60.length)+' accounts need attention';
+
+  function riskItems(list,dotCls){
+    if(!list.length) return '<div class="empty">All clear ✓</div>';
+    return list.sort(function(a,b){return (b.ds||0)-(a.ds||0);}).slice(0,8).map(function(d){
+      return '<div class="risk-item">'
+        +'<div class="risk-dot '+dotCls+'"></div>'
+        +'<div class="risk-iname">'+esc(d.n.length>40?d.n.slice(0,40)+'…':d.n)+'</div>'
+        +'<div class="risk-owner">'+esc(d.owner)+'</div>'
+        +'<div class="risk-days" style="color:var(--'+dotCls+')">'+d.ds+'d</div>'
+        +'</div>';
+    }).join('');
+  }
+
+  document.getElementById('risk-grid').innerHTML=[
+    {cls:'green',title:'Healthy — Active ≤14 days',list:healthy},
+    {cls:'amber',title:'Stalled — 15–60 days',list:stalled.filter(function(d){return d.ds<=60;})},
+    {cls:'red',title:'Critical — 60+ days no touch',list:critical60},
+  ].map(function(r){
+    return '<div class="risk-card">'
+      +'<div class="risk-hdr '+r.cls+'"><div class="risk-title">'+r.title+'</div><div class="risk-count">'+r.list.length+'</div></div>'
+      +riskItems(r.list,r.cls)
+      +'</div>';
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+//  PAGE 2 — BD JOURNEY
+// ══════════════════════════════════════════════════════
+var currentBD='Angie Lim';
+
+function setBD(owner,btn){
+  currentBD=owner;
+  document.querySelectorAll('.bd-tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderBDJourney();
+}
+
+function renderBDJourney(){
+  var o=currentBD;
+  var od=ACTIVE.filter(function(d){return d.owner===o;});
+  var ow=WON.filter(function(d){return d.owner===o&&d.close>='2026-01-01';});
+  var ol=LOST.filter(function(d){return d.owner===o;});
+  var op=od.filter(function(d){return ACTIVE_STAGES.indexOf(d.stage)>-1;});
+  var cur=o==='Andrew Ng'?'IDR':'MYR';
+  var pipeVal=op.reduce(function(a,d){return a+d.am;},0);
+  var fcVal=op.reduce(function(a,d){return a+d.weighted;},0);
+  var wonVal=ow.reduce(function(a,d){return a+d.am;},0);
+  var avgDeal=op.length>0?Math.round(pipeVal/op.length):0;
+
+  document.getElementById('bd-summary').innerHTML=[
+    {lbl:'Pipeline',val:'<span style="color:var(--blue)">'+fmtAmt(pipeVal,cur)+'</span>'},
+    {lbl:'Forecast Range',val:'<span style="color:var(--amber)">'+fmtAmt(Math.round(fcVal*0.80),cur)+' — '+fmtAmt(fcVal,cur)+'</span>'},
+    {lbl:'Won 2026',val:'<span style="color:var(--green)">'+fmtAmt(wonVal,cur)+'</span>'},
+    {lbl:'Active Deals',val:'<span style="color:var(--text)">'+op.length+'</span>'},
+    {lbl:'Avg Deal Size',val:'<span style="color:var(--gold)">'+fmtAmt(avgDeal,cur)+'</span>'},
+    {lbl:'Deals Won / Lost',val:'<span style="color:var(--text2)">'+ow.length+' / '+ol.length+'</span>'},
+  ].map(function(s){
+    return '<div class="bd-stat"><div class="bd-stat-lbl">'+s.lbl+'</div><div class="bd-stat-val">'+s.val+'</div></div>';
+  }).join('');
+
+  var stages=['Opportunity','Solution','Discussion / Negotiation'];
+  document.getElementById('bd-stages').innerHTML=stages.map(function(st){
+    var g=op.filter(function(d){return d.stage===st;});
+    var total=g.reduce(function(a,d){return a+d.am;},0);
+    var avgDis=g.length>0?Math.round(g.reduce(function(a,d){return a+(d.dis||0);},0)/g.length):0;
+    var col=STAGE_COLOUR[st];
+    var prob={'Opportunity':'20%','Solution':'33%','Discussion / Negotiation':'67%'}[st]||'';
+    var cards=g.sort(function(a,b){return b.am-a.am;}).map(function(d){
+      return '<div class="acc-card risk-'+d.risk+'">'
+        +'<div class="acc-name">'+esc(d.n.length>50?d.n.slice(0,50)+'…':d.n)+'</div>'
+        +'<div class="acc-row">'
+          +'<span class="acc-amt" style="color:var(--gold)">'+fmtAmt(d.am,d.cur)+'</span>'
+          +'<span class="rbadge '+d.risk+'">'+(d.dis||0)+'d in stage</span>'
+          +(d.close?'<span class="acc-close">📅 '+d.close+'</span>':'')
+        +'</div></div>';
+    }).join('');
+    return '<div class="stage-col-wrap">'
+      +'<div class="stage-col-hdr"><div class="stage-col-name" style="color:'+col+'">'+esc(st)+'</div><div class="stage-col-meta">'+g.length+' deals · '+prob+'</div></div>'
+      +'<div class="stage-col-body">'+(cards||'<div class="empty">No deals</div>')+'</div>'
+      +'<div class="stage-col-stats">'
+        +'<div class="stage-col-stat"><div class="stage-col-stat-v" style="color:'+col+'">'+g.length+'</div><div class="stage-col-stat-l">Accounts</div></div>'
+        +'<div class="stage-col-stat"><div class="stage-col-stat-v" style="color:var(--gold)">'+fmtAmt(total,cur)+'</div><div class="stage-col-stat-l">Total</div></div>'
+        +'<div class="stage-col-stat"><div class="stage-col-stat-v" style="color:var(--text2)">'+avgDis+'d</div><div class="stage-col-stat-l">Avg Days</div></div>'
+      +'</div></div>';
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+//  PAGE 3 — STRATEGIC DEALS
+// ══════════════════════════════════════════════════════
+var strategicSort='am';
+
+function sortDeals(col,btn){
+  strategicSort=col;
+  document.querySelectorAll('.sort-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  renderStrategic();
+}
+
+function renderStrategic(){
+  var top20=ACTIVE.filter(function(d){return ACTIVE_STAGES.indexOf(d.stage)>-1;})
+    .sort(function(a,b){
+      if(strategicSort==='am'){var va=a.cur==='IDR'?a.am/56:a.am,vb=b.cur==='IDR'?b.am/56:b.am;return vb-va;}
+      if(strategicSort==='close') return (a.close||'9999').localeCompare(b.close||'9999');
+      if(strategicSort==='dis') return (b.dis||0)-(a.dis||0);
+      if(strategicSort==='owner') return a.owner.localeCompare(b.owner);
+      return 0;
+    }).slice(0,20);
+
+  document.getElementById('strategic-count').textContent=top20.length+' deals shown';
+  document.getElementById('nav-n3').textContent=top20.length;
+  document.getElementById('strategic-body').innerHTML=top20.map(function(d,i){
+    return '<tr>'
+      +'<td style="color:var(--muted);font-size:11px;font-weight:700">'+(i+1)+'</td>'
+      +'<td><div class="deal-name-cell">'+esc(d.n.length>50?d.n.slice(0,50)+'…':d.n)+'</div>'
+        +'<div style="margin-top:3px">'+mktPill(d.mk)+'</div></td>'
+      +'<td style="font-size:11px;color:var(--text2)">'+esc(d.owner)+'</td>'
+      +'<td>'+stageBadge(d.stage)+'</td>'
+      +'<td style="font-weight:700;color:var(--gold)">'+fmtFull(d.am,d.cur)+'</td>'
+      +'<td style="font-size:11px;color:var(--text2)">'+(d.dis||0)+'d</td>'
+      +'<td style="font-size:10px;color:var(--text3)">'+(d.close||'—')+'</td>'
+      +'<td>'+rbadge(d.risk)+'</td>'
+      +'</tr>';
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+//  PAGE 4 — GAP ANALYSIS
+// ══════════════════════════════════════════════════════
+function initGap(){
+  var won26=WON.filter(function(d){return d.close>='2026-01-01';});
+  var cold90=ACTIVE.filter(function(d){return d.ds!=null&&d.ds>=90;});
+  var stalled14=ACTIVE.filter(function(d){return d.ds!=null&&d.ds>=14&&ACTIVE_STAGES.indexOf(d.stage)>-1;});
+
+  // Flagged developers
+  document.getElementById('flag-count').textContent=FLAGGED_GAP.length;
+  var urgencyStyle={'CRITICAL':'background:#1a0808;border-color:#7a2020;','HIGH':'background:#1a1208;border-color:#7a5010;','MEDIUM':'background:#0d1520;border-color:#204060;'};
+  var urgencyBadge={
+    'CRITICAL':'<span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:3px;background:#3d1515;color:#f87171;border:1px solid #7a3030;">⚡ CRITICAL</span>',
+    'HIGH':'<span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:3px;background:#2a1f0a;color:var(--amber);border:1px solid #5a4010;">🔥 HIGH</span>',
+    'MEDIUM':'<span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:3px;background:#1a2035;color:var(--blue);border:1px solid #2a3555;">📌 MEDIUM</span>',
+  };
+
+  document.getElementById('flagged-grid').innerHTML=FLAGGED_GAP
+    .sort(function(a,b){var o={CRITICAL:0,HIGH:1,MEDIUM:2};return (o[a.urgency]||3)-(o[b.urgency]||3);})
+    .map(function(d){
+      var projs=(d.projects||[]).slice(0,4).map(function(p){
+        return '<div style="padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);">'
+          +'<div style="font-size:11px;color:var(--text)">→ '+esc(p.name)+'</div>'
+          +'<div style="font-size:10px;color:var(--muted);margin-top:1px">'+esc(p.gdv)+' · '+esc(p.timeline)+'</div>'
+          +'</div>';
+      }).join('');
+      var coldTxt=d.days_cold
+        ?'<span style="font-size:10px;font-weight:700;color:var(--red)">🧊 '+d.days_cold+'d cold</span>'
+        :'<span style="font-size:10px;color:var(--red)">Never contacted</span>';
+      return '<div style="border:1px solid;border-radius:8px;padding:14px 16px;margin-bottom:10px;'+(urgencyStyle[d.urgency]||urgencyStyle['MEDIUM'])+'">'
+        +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">'
+          +(urgencyBadge[d.urgency]||'')
+          +'<span style="font-size:13px;font-weight:700;color:var(--text)">'+esc(d.name)+'</span>'
+          +'<span style="font-size:10px;color:var(--muted)">'+(d.country==='Malaysia'?'🇲🇾':'🇮🇩')+' '+esc(d.country)+'</span>'
+          +coldTxt
+        +'</div>'
+        +'<div style="font-size:10px;color:var(--text3);line-height:1.6;margin-bottom:8px">'+esc(d.reason)+'</div>'
+        +projs
+        +'<div style="font-size:9px;color:var(--text3);border-top:1px solid rgba(255,255,255,0.06);padding-top:6px;margin-top:6px">📎 '+esc(d.source)+'</div>'
+        +'</div>';
+    }).join('');
+
+  // Gap KPIs
+  document.getElementById('gap-kpis').innerHTML=[
+    {val:cold90.length,lbl:'Cold 90+ Days',col:'var(--red)'},
+    {val:stalled14.length,lbl:'Stalled 14+ Days',col:'var(--amber)'},
+    {val:won26.length,lbl:'Won in 2026',col:'var(--green)'},
+    {val:LOST.length,lbl:'Lost in 2026',col:'var(--red)'},
+  ].map(function(k){
+    return '<div class="gap-kpi"><div class="gap-kpi-val" style="color:'+k.col+'">'+k.val+'</div><div class="gap-kpi-lbl">'+k.lbl+'</div></div>';
+  }).join('');
+
+  // Cold 90+
+  document.getElementById('cold-count').textContent=cold90.length;
+  document.getElementById('cold-body').innerHTML=cold90.length
+    ?cold90.sort(function(a,b){return (b.ds||0)-(a.ds||0);}).map(function(d){
+      return '<tr>'
+        +'<td style="font-size:12px;font-weight:500">'+esc(d.n.length>40?d.n.slice(0,40)+'…':d.n)+'</td>'
+        +'<td style="color:var(--text2)">'+esc(d.owner)+'</td>'
+        +'<td style="color:var(--muted)">'+(d.modified||'—')+'</td>'
+        +'<td><span class="rbadge red">'+d.ds+'d</span></td>'
+        +'</tr>';
+    }).join('')
+    :'<tr><td colspan="4" class="empty">No cold accounts</td></tr>';
+
+  // Won 2026
+  document.getElementById('won-count-gap').textContent=won26.length+' deals';
+  document.getElementById('won-body').innerHTML=won26.length
+    ?won26.sort(function(a,b){return b.am-a.am;}).map(function(d){
+      return '<tr>'
+        +'<td style="font-size:12px;font-weight:500">'+esc(d.n.length>40?d.n.slice(0,40)+'…':d.n)+'</td>'
+        +'<td style="color:var(--text2)">'+esc(d.owner)+'</td>'
+        +'<td style="font-weight:700;color:var(--green)">'+fmtAmt(d.am,d.cur)+'</td>'
+        +'<td style="color:var(--muted)">'+(d.close||'—')+'</td>'
+        +'</tr>';
+    }).join('')
+    :'<tr><td colspan="4" class="empty">No won deals</td></tr>';
+
+  // Lost 2026
+  document.getElementById('lost-count-gap').textContent=LOST.length+' deals';
+  document.getElementById('lost-body').innerHTML=LOST.length
+    ?LOST.sort(function(a,b){return b.am-a.am;}).map(function(d){
+      return '<tr>'
+        +'<td style="font-size:12px;font-weight:500">'+esc(d.n.length>48?d.n.slice(0,48)+'…':d.n)+'</td>'
+        +'<td style="color:var(--text2)">'+esc(d.owner)+'</td>'
+        +'<td>'+mktPill(d.mk)+'</td>'
+        +'<td style="font-weight:700;color:var(--red)">'+fmtAmt(d.am,d.cur)+'</td>'
+        +'</tr>';
+    }).join('')
+    :'<tr><td colspan="4" class="empty">No lost deals</td></tr>';
+}
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('date-badge').textContent=new Date().toLocaleDateString('en-MY',{day:'numeric',month:'short',year:'numeric'});
+  initOverview();
+  renderBDJourney();
+  renderStrategic();
+  initGap();
+});
+
+</script>
+</body>
+</html>
