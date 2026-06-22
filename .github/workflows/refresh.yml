@@ -34,7 +34,14 @@ jobs:
       - name: Password-protect dashboard
         env:
           STATICRYPT_PASSWORD: ${{ secrets.DASHBOARD_PASSCODE }}
-        run: npx --yes staticrypt output/index.html -d output --short
+        run: >
+          npx --yes staticrypt output/index.html -d output --short
+          -t scripts/staticrypt_template.html
+          --template-title "MytePro · Secure Access"
+          --template-instructions "This dashboard is confidential. Enter the team passcode to continue."
+          --template-placeholder "Enter passcode"
+          --template-button "Unlock Dashboard"
+          --template-error "Incorrect passcode — please try again."
 
       - name: Deploy to Netlify
         env:
