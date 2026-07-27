@@ -149,7 +149,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .bd-stat-val{font-size:13px;font-weight:700;line-height:1.4;}
 
 /* ── STAGE COLUMNS ── */
-.stage-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.stage-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
 .stage-col-wrap{background:var(--surf2);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
 .stage-col-hdr{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .stage-col-name{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
@@ -240,7 +240,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="hdr-badge">LIVE · HubSpot</div>
   <div class="hdr-right">
     <div class="hdr-chip chip-live">● Live Data</div>
-    <div class="hdr-chip chip-date" id="date-badge">REFRESH_DATE_PLACEHOLDER</div>
+    <div class="hdr-chip chip-date" id="date-badge">21 Jun 2026</div>
   </div>
 </div>
 
@@ -438,10 +438,9 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 </html>
 
 
-<!-- INJECT_DATE -->
 <script>
 /* INJECT_EXEC */
-/* INJECT_FLAGGED */
+const FLAGGED_GAP = [{"name": "IOI Properties", "country": "Malaysia", "last_activity": "2025-11-04", "days_cold": 229, "urgency": "CRITICAL", "projects": [{"name": "IOI Rio City — 100-acre integrated township, Bandar Puteri Puchong", "gdv": "RM12B over 12 years", "timeline": "Active launches 2026-2027"}, {"name": "W Residences Marina View, Singapore", "gdv": "683 units + 350-room W Hotel", "timeline": "Completion 2028"}, {"name": "IOIPG Malaysia REIT listing", "gdv": "9 prime assets", "timeline": "H2 2026"}, {"name": "IOI City Mall Phase 3 + IOI Mall Rio", "gdv": "Major expansion", "timeline": "2026-2027"}], "source": "Bursa filing, Kenanga analyst report May 2026, BusinessToday", "reason": "One of Malaysia's biggest developers — 103% profit surge YoY. Active launches underway. No MytePro contact since Nov 2025. IOI Rio City alone is a 12-year RM12B township — prime VR opportunity."}, {"name": "EcoWorld", "country": "Malaysia", "last_activity": "2025-10-14", "days_cold": 250, "urgency": "CRITICAL", "projects": [{"name": "Eco Radiance Township — 847 acres, Semenyih", "gdv": "RM5.2B", "timeline": "Launch mid-2026"}, {"name": "Eco Business Park VII — Negeri Sembilan", "gdv": "Industrial/commercial", "timeline": "FY2026"}, {"name": "Eco Business Park 8 — Kulai, Johor (JS-SEZ)", "gdv": "IBTEC industrial park", "timeline": "Launch 2026, completion 2028"}, {"name": "Larkin Development — JB mixed-use", "gdv": "Prime urban location", "timeline": "H2 2026"}, {"name": "Google Data Centre — Eco Business Park V, Puchong", "gdv": "RM4.8B lease + RM266M land", "timeline": "Completion 2027"}], "source": "EcoWorld Q1 FY2026 quarterly report Mar 2026, Bursa filing, The Edge Malaysia", "reason": "Massive pipeline — RM2.93B revenue in FY2025, three major launches in FY2026. Eco Radiance township alone is a RM5.2B project. No contact since Oct 2025 despite highest-level activity."}, {"name": "Mayland", "country": "Malaysia", "last_activity": "2025-10-06", "days_cold": 258, "urgency": "HIGH", "projects": [{"name": "Majestic @ Kiara Reserve — Desa Sri Hartamas (villas, parkhomes, condos)", "gdv": "RM551M", "timeline": "Launch Q4 2025 / ongoing 2026"}, {"name": "Royal Garden — Jalan Kuching, Sri Putramas Phase 4", "gdv": "RM600M+", "timeline": "Launched 2026"}, {"name": "Dorsett Residences Sri Hartamas", "gdv": "RM500M+", "timeline": "Launched Jun 2026"}, {"name": "Pipeline RM1.53B in new launches", "gdv": "RM7B+ total GDV pipeline", "timeline": "2026"}], "source": "The Edge Malaysia cover story Sep 2025, EdgeProp Jun 2026", "reason": "Mayland is on a major comeback — RM1.53B in 2026 launches alone, RM7B pipeline. Just launched Dorsett Residences Sri Hartamas in June 2026. No contact since Oct 2025."}, {"name": "KLK Land", "country": "Malaysia", "last_activity": null, "days_cold": null, "urgency": "HIGH", "projects": [{"name": "Bandar Seri Coalfields — 1,001-acre integrated township, Selangor", "gdv": "Multi-billion", "timeline": "Active 2026, Coalfields Retail Park Q2 2026"}, {"name": "KLK TechPark — Tanjong Malim, Perak", "gdv": "Industrial tech park", "timeline": "2026-2027"}, {"name": "Industrial JV — Ijok, Selangor", "gdv": "Industrial development", "timeline": "2026-2027"}, {"name": "Caledonia Avenue", "gdv": "Upcoming residential phase", "timeline": "Coming soon end Q2 2026"}], "source": "KLK Land website Apr 2026, StarProperty Awards 2026", "reason": "Never contacted. 1,001-acre township actively launching. Retail park opened Q2 2026. Won 3 StarProperty awards 2026. Strong candidate for VR sales gallery."}, {"name": "UOA Development Berhad", "country": "Malaysia", "last_activity": "2025-11-27", "days_cold": 206, "urgency": "HIGH", "projects": [{"name": "Bamboo Hills Residences — 3 blocks, 2,517 units + retail podium", "gdv": "RM1.5B+", "timeline": "Active, completion 2028"}, {"name": "Duo Tower Office — 2 blocks", "gdv": "RM1.2B", "timeline": "Completion 2027"}, {"name": "First JB project — near Bukit Chagar RTS station", "gdv": "New market entry", "timeline": "2026-2027"}], "source": "EdgeProp Apr 2024, The Edge May 2025", "reason": "RM2.7B in active projects. First venture into Johor near RTS Link station. No contact since Nov 2025."}, {"name": "Glomac Berhad", "country": "Malaysia", "last_activity": "2025-03-03", "days_cold": 475, "urgency": "HIGH", "projects": [{"name": "Loop City Residences — Puchong (980 SOHO/serviced apartments)", "gdv": "RM340M", "timeline": "Active 2025-2026"}, {"name": "Lakeside Residences — Semi-D Keys Phase 2", "gdv": "RM239M+", "timeline": "2026"}, {"name": "Allamanda Suajana KLIA — terrace houses", "gdv": "Active township", "timeline": "2026"}], "source": "MIDF analyst report Jul 2024, Bursa filing Jan 2026", "reason": "475 days cold. Active launches in 3 projects. Loop City Residences high-rise in Puchong is exactly the VR use case. Last contact Mar 2025."}, {"name": "Boustead Properties Berhad", "country": "Malaysia", "last_activity": "2025-10-30", "days_cold": 234, "urgency": "MEDIUM", "projects": [{"name": "One Cochrane Residences — Jalan Cochrane, KL (near Cochrane MRT)", "gdv": "Premium residential", "timeline": "Upcoming 2026"}, {"name": "Mutiara Hills — Semenyih, Selangor", "gdv": "Township development", "timeline": "Ongoing"}], "source": "Boustead website 2026", "reason": "One Cochrane Residences is an upcoming premium development near Cochrane MRT — strong VR candidate. Last contact Oct 2025."}, {"name": "OSK Group", "country": "Malaysia", "last_activity": "2025-01-06", "days_cold": 531, "urgency": "HIGH", "projects": [{"name": "OSK Ombak — Kuantan beachfront (Mediterranean-inspired)", "gdv": "Beachfront resort living", "timeline": "Active 2026"}, {"name": "Majestic Residence — Chow Kit (via OSK Property subsidiary Majesticgen)", "gdv": "RM600K from", "timeline": "Completion Q1 2026"}, {"name": "You City III — Cheras/Kajang", "gdv": "High-rise", "timeline": "Ongoing 2026"}], "source": "EdgeProp new launches 2026, Majesticgen HubSpot record", "reason": "531 days cold — critical gap. OSK Property arm is actively launching. Majesticgen is an OSK Property subsidiary already in CRM separately."}, {"name": "Exsim Development Sdn Bhd", "country": "Malaysia", "last_activity": "2025-10-02", "days_cold": 262, "urgency": "MEDIUM", "projects": [{"name": "KLCC / Bukit Bintang projects — multiple high-rise", "gdv": "350m from KLCC Twin Towers", "timeline": "Active 2026"}, {"name": "Projects in Bukit Jalil, Penang, Ipoh, Johor, Terengganu", "gdv": "Multi-state pipeline", "timeline": "2026-2027"}], "source": "Exsim website May 2026", "reason": "Multiple high-rise projects near KLCC — prime VR gallery opportunity. Last contact Oct 2025."}, {"name": "MKH Berhad", "country": "Malaysia", "last_activity": "2025-12-01", "days_cold": 202, "urgency": "MEDIUM", "projects": [{"name": "MIRAI Residences — Kajang (JV with Panasonic)", "gdv": "Residential", "timeline": "Ongoing completions 2026"}, {"name": "Kajang township expansion projects", "gdv": "Multiple phases", "timeline": "2026-2027"}], "source": "HubSpot record, developer profile", "reason": "Deal Lost in HubSpot for RM348K. Re-engagement opportunity — they are continuing to develop in Kajang corridor. Last contact Dec 2025."}, {"name": "Silicon Island Development", "country": "Malaysia", "last_activity": null, "days_cold": null, "urgency": "HIGH", "projects": [{"name": "Silicon Island — 4,500-acre man-made island, Penang", "gdv": "RM70-100B long-term", "timeline": "Active construction 2026-2030+"}, {"name": "First residential and commercial towers", "gdv": "Multi-billion first phase", "timeline": "Launch expected 2026-2027"}], "source": "Public knowledge, Penang Development Corporation", "reason": "Never contacted. Malaysia's biggest property mega-project. Any residential component will need VR sales galleries. HubSpot record exists but completely untouched."}, {"name": "Citra Swarna Group", "country": "Indonesia", "last_activity": "2025-02-13", "days_cold": 493, "urgency": "HIGH", "projects": [{"name": "Citra Garden series — multiple cities", "gdv": "Active township launches", "timeline": "2026-2027"}], "source": "Company profile", "reason": "493 days cold. Active residential developer. Andrew Ng territory."}, {"name": "ASTRA Infra", "country": "Indonesia", "last_activity": "2025-02-18", "days_cold": 488, "urgency": "MEDIUM", "projects": [{"name": "Anandamaya Residences — Jakarta CBD", "gdv": "Premium high-rise", "timeline": "Ongoing 2026"}, {"name": "Township developments in Serpong corridor", "gdv": "Multiple projects", "timeline": "2026-2027"}], "source": "Company profile", "reason": "488 days cold. Astra Land arm has active premium residential. Last note Feb 2025."}];
 
 // ── Global helpers ────────────────────────────────────────────────────────────
 function esc(s){ return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):''; }
@@ -647,10 +646,9 @@ function setBD(owner,btn){
 
 function renderBDJourney(){
   var o=currentBD;
-  var od=ACTIVE.filter(function(d){return d.owner===o;});
+  var op=ACTIVE.filter(function(d){return d.owner===o&&['Opportunity','Solution','Discussion / Negotiation'].indexOf(d.stage)>-1;});
   var ow=WON.filter(function(d){return d.owner===o&&d.close>='2026-01-01';});
   var ol=LOST.filter(function(d){return d.owner===o;});
-  var op=od.filter(function(d){return ACTIVE_STAGES.indexOf(d.stage)>-1;});
   var cur=o==='Andrew Ng'?'IDR':'MYR';
   var pipeVal=op.reduce(function(a,d){return a+d.am;},0);
   var fcVal=op.reduce(function(a,d){return a+d.weighted;},0);
@@ -668,8 +666,11 @@ function renderBDJourney(){
     return '<div class="bd-stat"><div class="bd-stat-lbl">'+s.lbl+'</div><div class="bd-stat-val">'+s.val+'</div></div>';
   }).join('');
 
-  var stages=['Opportunity','Solution','Discussion / Negotiation'];
-  document.getElementById('bd-stages').innerHTML=stages.map(function(st){
+  var ACTIVE_STAGES=['Opportunity','Solution','Discussion / Negotiation'];
+  var allCols='';
+
+  // Active stage columns
+  ACTIVE_STAGES.forEach(function(st){
     var g=op.filter(function(d){return d.stage===st;});
     var total=g.reduce(function(a,d){return a+d.am;},0);
     var avgDis=g.length>0?Math.round(g.reduce(function(a,d){return a+(d.dis||0);},0)/g.length):0;
@@ -680,11 +681,11 @@ function renderBDJourney(){
         +'<div class="acc-name">'+esc(d.n.length>50?d.n.slice(0,50)+'…':d.n)+'</div>'
         +'<div class="acc-row">'
           +'<span class="acc-amt" style="color:var(--gold)">'+fmtAmt(d.am,d.cur)+'</span>'
-          +'<span class="rbadge '+d.risk+'">'+(d.dis||0)+'d in stage</span>'
+          +'<span class="rbadge '+d.risk+'">'+(d.dis||0)+'d</span>'
           +(d.close?'<span class="acc-close">📅 '+d.close+'</span>':'')
         +'</div></div>';
     }).join('');
-    return '<div class="stage-col-wrap">'
+    allCols+='<div class="stage-col-wrap">'
       +'<div class="stage-col-hdr"><div class="stage-col-name" style="color:'+col+'">'+esc(st)+'</div><div class="stage-col-meta">'+g.length+' deals · '+prob+'</div></div>'
       +'<div class="stage-col-body">'+(cards||'<div class="empty">No deals</div>')+'</div>'
       +'<div class="stage-col-stats">'
@@ -692,7 +693,31 @@ function renderBDJourney(){
         +'<div class="stage-col-stat"><div class="stage-col-stat-v" style="color:var(--gold)">'+fmtAmt(total,cur)+'</div><div class="stage-col-stat-l">Total</div></div>'
         +'<div class="stage-col-stat"><div class="stage-col-stat-v" style="color:var(--text2)">'+avgDis+'d</div><div class="stage-col-stat-l">Avg Days</div></div>'
       +'</div></div>';
+  });
+
+  // Won 2026 column
+  var wonCards=ow.sort(function(a,b){return b.am-a.am;}).map(function(d){
+    return '<div class="acc-card risk-green">'
+      +'<div class="acc-name">'+esc(d.n.length>50?d.n.slice(0,50)+'…':d.n)+'</div>'
+      +'<div class="acc-row">'
+        +'<span class="acc-amt" style="color:var(--green)">'+fmtAmt(d.am,d.cur)+'</span>'
+        +(d.close?'<span class="acc-close" style="color:var(--green)">✓ '+d.close+'</span>':'')
+      +'</div></div>';
   }).join('');
+
+  allCols+='<div class="stage-col-wrap" style="border-color:#1a3d28;">'
+    +'<div class="stage-col-hdr" style="background:#0d1f14;border-bottom-color:#1a3d28;">'
+      +'<div class="stage-col-name" style="color:var(--green)">Won & Closed</div>'
+      +'<div class="stage-col-meta">'+ow.length+' deals · 2026</div>'
+    +'</div>'
+    +'<div class="stage-col-body">'+(wonCards||'<div class="empty">No won deals in 2026</div>')+'</div>'
+    +'<div class="stage-col-stats">'
+      +'<div class="stage-col-stat"><div class="stage-col-stat-v" style="color:var(--green)">'+ow.length+'</div><div class="stage-col-stat-l">Won</div></div>'
+      +'<div class="stage-col-stat"><div class="stage-col-stat-v" style="color:var(--green)">'+fmtAmt(wonVal,cur)+'</div><div class="stage-col-stat-l">Total</div></div>'
+      +'<div class="stage-col-stat"><div class="stage-col-stat-v" style="color:var(--text2)">2026</div><div class="stage-col-stat-l">Period</div></div>'
+    +'</div></div>';
+
+  document.getElementById('bd-stages').innerHTML=allCols;
 }
 
 // ══════════════════════════════════════════════════════
