@@ -58,6 +58,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .kpi-val{font-size:11px;font-weight:700;line-height:1.5;margin-bottom:6px;}
 .kpi-val div{margin-bottom:2px;}
 .kpi-sub{font-size:10px;color:var(--text3);}
+.usd-eq{color:var(--text3);font-weight:600;font-size:.82em;white-space:nowrap;}
 .kpi-trend{font-size:10px;font-weight:600;margin-top:6px;}
 .kpi-trend.up{color:var(--green);}
 .kpi-trend.down{color:var(--red);}
@@ -445,19 +446,37 @@ const FLAGGED_GAP = [{"name": "IOI Properties", "country": "Malaysia", "last_act
 // ── Global helpers ────────────────────────────────────────────────────────────
 function esc(s){ return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):''; }
 function fmt(n,d=0){ return n==null?'—':Number(n).toLocaleString('en',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+// ── FX: FIXED USD conversion rates — units of local currency per 1 USD ──────────
+//     EDIT THESE VALUES to update every USD figure across the whole dashboard.
+var FX_PER_USD = { USD:1, MYR:4.30, SGD:1.35, IDR:16300, AUD:1.52 };
+function usdOf(n,cur){ var r=FX_PER_USD[cur||'MYR']; return (r&&n!=null)? Number(n)/r : null; }
+function fmtUSD(n){
+  if(n==null) return '';
+  if(n>=1000000000) return 'USD '+fmt(n/1000000000,2)+'B';
+  if(n>=1000000)    return 'USD '+fmt(n/1000000,2)+'M';
+  if(n>=1000)       return 'USD '+fmt(n/1000,0)+'K';
+  return 'USD '+fmt(Math.round(n),0);
+}
+// USD equivalent tag appended next to a local-currency figure (skips USD-native amounts)
+function usdTag(n,cur){
+  var c=cur||'MYR';
+  if(c==='USD'||n==null) return '';
+  var u=usdOf(n,c);
+  return u!=null ? ' <span class="usd-eq">≈ '+fmtUSD(u)+'</span>' : '';
+}
 function fmtAmt(n,cur){
   if(n==null||n===undefined) return '—';
-  var c=cur||'MYR';
+  var c=cur||'MYR', local;
   if(c==='IDR'){
-    if(n>=1000000000) return 'IDR '+fmt(n/1000000000,2)+'B';
-    if(n>=1000000)    return 'IDR '+fmt(n/1000000,1)+'M';
-    return 'IDR '+fmt(n,0);
-  }
-  if(n>=1000000) return c+' '+fmt(n/1000000,2)+'M';
-  if(n>=1000)    return c+' '+fmt(n/1000,1)+'K';
-  return c+' '+fmt(n,0);
+    if(n>=1000000000) local='IDR '+fmt(n/1000000000,2)+'B';
+    else if(n>=1000000) local='IDR '+fmt(n/1000000,1)+'M';
+    else local='IDR '+fmt(n,0);
+  } else if(n>=1000000) local=c+' '+fmt(n/1000000,2)+'M';
+  else if(n>=1000)      local=c+' '+fmt(n/1000,1)+'K';
+  else                  local=c+' '+fmt(n,0);
+  return local + usdTag(n,c);
 }
-function fmtFull(n,cur){ return (cur||'MYR')+' '+Math.round(n||0).toLocaleString('en'); }
+function fmtFull(n,cur){ var c=cur||'MYR'; return c+' '+Math.round(n||0).toLocaleString('en') + usdTag(n,c); }
 function mktPill(mk){
   var cls={'Malaysia':'pill-my','Indonesia':'pill-idn','Singapore':'pill-sg','Australia':'pill-au'}[mk]||'pill-my';
   return '<span class="mkt-pill '+cls+'">'+esc(mk)+'</span>';
