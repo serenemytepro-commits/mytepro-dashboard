@@ -287,7 +287,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       </div>
       <table class="mkt-table" id="mkt-table">
         <thead><tr>
-          <th>Market</th><th>Pipeline</th><th>Forecast</th><th>Won (2026)</th><th>Deals</th>
+          <th>Market</th><th>Pipeline</th><th>Forecast</th><th>Signed (2026)</th><th>Deals</th>
         </tr></thead>
         <tbody id="mkt-body"></tbody>
       </table>
@@ -407,7 +407,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <!-- Won deals history -->
     <div class="card">
       <div class="sec-hdr" style="margin-bottom:10px;">
-        <div class="sec-title" style="color:var(--green)">Won Deals — 2026</div>
+        <div class="sec-title" style="color:var(--green)">Deals Signed — 2026</div>
         <div class="sec-count" id="won-count-gap">—</div>
       </div>
       <div class="gap-tbl-wrap">
@@ -537,9 +537,9 @@ function initOverview(){
     {cls:'kpi-forecast',lbl:'Forecast Range',
      val:'<div style="color:var(--amber);font-size:13px;font-weight:800">'+fmtAmt(fcMYR*0.80,'MYR')+' — '+fmtAmt(fcMYR,'MYR')+'</div>'+(fcIDR>0?'<div style="color:var(--gold);font-size:12px;font-weight:700;margin-top:4px">'+fmtAmt(fcIDR*0.80,'IDR')+' — '+fmtAmt(fcIDR,'IDR')+'</div>':''),
      sub:'Conservative to weighted (stage prob)'},
-    {cls:'kpi-won',lbl:'Closed Won 2026',
+    {cls:'kpi-won',lbl:'Deal Signed 2026',
      val:'<div style="color:var(--green);font-size:20px;font-weight:800">'+fmtAmt(wonMYR,'MYR')+'</div>'+(wonIDR>0?'<div style="color:var(--teal);font-size:16px;font-weight:700;margin-top:2px">'+fmtAmt(wonIDR,'IDR')+'</div>':''),
-     sub:won26.length+' deals closed'},
+     sub:won26.length+' deals signed'},
     {cls:'kpi-coverage',lbl:'Active Opportunities',
      val:'<div style="color:var(--gold);font-size:32px;font-weight:800;line-height:1">'+pipe.length+'</div>',
      sub:'MY + IDN pipeline'},
@@ -615,7 +615,7 @@ function initOverview(){
       +'<div class="lb-stats">'
         +'<div class="lb-stat"><div class="lb-stat-val" style="color:var(--blue)">'+pipeStr+'</div><div class="lb-stat-lbl">Pipeline</div></div>'
         +'<div class="lb-stat"><div class="lb-stat-val" style="color:var(--amber)">'+fcStr+'</div><div class="lb-stat-lbl">Forecast</div></div>'
-        +'<div class="lb-stat"><div class="lb-stat-val" style="color:var(--green)">'+wonStr+'</div><div class="lb-stat-lbl">Won</div></div>'
+        +'<div class="lb-stat"><div class="lb-stat-val" style="color:var(--green)">'+wonStr+'</div><div class="lb-stat-lbl">Signed</div></div>'
         +'<div class="lb-stat"><div class="lb-stat-val">'+r.op.length+'</div><div class="lb-stat-lbl">Deals</div></div>'
       +'</div>'
       +'</div>';
@@ -677,10 +677,10 @@ function renderBDJourney(){
   document.getElementById('bd-summary').innerHTML=[
     {lbl:'Pipeline',val:'<span style="color:var(--blue)">'+fmtAmt(pipeVal,cur)+'</span>'},
     {lbl:'Forecast Range',val:'<span style="color:var(--amber)">'+fmtAmt(Math.round(fcVal*0.80),cur)+' — '+fmtAmt(fcVal,cur)+'</span>'},
-    {lbl:'Won 2026',val:'<span style="color:var(--green)">'+fmtAmt(wonVal,cur)+'</span>'},
+    {lbl:'Deal Signed 2026',val:'<span style="color:var(--green)">'+fmtAmt(wonVal,cur)+'</span>'},
     {lbl:'Active Deals',val:'<span style="color:var(--text)">'+op.length+'</span>'},
     {lbl:'Avg Deal Size',val:'<span style="color:var(--gold)">'+fmtAmt(avgDeal,cur)+'</span>'},
-    {lbl:'Deals Won / Lost',val:'<span style="color:var(--text2)">'+ow.length+' / '+ol.length+'</span>'},
+    {lbl:'Deals Signed / Lost',val:'<span style="color:var(--text2)">'+ow.length+' / '+ol.length+'</span>'},
   ].map(function(s){
     return '<div class="bd-stat"><div class="bd-stat-lbl">'+s.lbl+'</div><div class="bd-stat-val">'+s.val+'</div></div>';
   }).join('');
@@ -726,12 +726,12 @@ function renderBDJourney(){
 
   allCols+='<div class="stage-col-wrap" style="border-color:#1a3d28;">'
     +'<div class="stage-col-hdr" style="background:#0d1f14;border-bottom-color:#1a3d28;">'
-      +'<div class="stage-col-name" style="color:var(--green)">Won & Closed</div>'
+      +'<div class="stage-col-name" style="color:var(--green)">Deal Signed</div>'
       +'<div class="stage-col-meta">'+ow.length+' deals · 2026</div>'
     +'</div>'
-    +'<div class="stage-col-body">'+(wonCards||'<div class="empty">No won deals in 2026</div>')+'</div>'
+    +'<div class="stage-col-body">'+(wonCards||'<div class="empty">No signed deals in 2026</div>')+'</div>'
     +'<div class="stage-col-stats">'
-      +'<div class="stage-col-stat"><div class="stage-col-stat-v" style="color:var(--green)">'+ow.length+'</div><div class="stage-col-stat-l">Won</div></div>'
+      +'<div class="stage-col-stat"><div class="stage-col-stat-v" style="color:var(--green)">'+ow.length+'</div><div class="stage-col-stat-l">Signed</div></div>'
       +'<div class="stage-col-stat"><div class="stage-col-stat-v" style="color:var(--green)">'+fmtAmt(wonVal,cur)+'</div><div class="stage-col-stat-l">Total</div></div>'
       +'<div class="stage-col-stat"><div class="stage-col-stat-v" style="color:var(--text2)">2026</div><div class="stage-col-stat-l">Period</div></div>'
     +'</div></div>';
@@ -824,7 +824,7 @@ function initGap(){
   document.getElementById('gap-kpis').innerHTML=[
     {val:cold90.length,lbl:'Cold 90+ Days',col:'var(--red)'},
     {val:stalled14.length,lbl:'Stalled 14+ Days',col:'var(--amber)'},
-    {val:won26.length,lbl:'Won in 2026',col:'var(--green)'},
+    {val:won26.length,lbl:'Signed in 2026',col:'var(--green)'},
     {val:LOST.length,lbl:'Lost in 2026',col:'var(--red)'},
   ].map(function(k){
     return '<div class="gap-kpi"><div class="gap-kpi-val" style="color:'+k.col+'">'+k.val+'</div><div class="gap-kpi-lbl">'+k.lbl+'</div></div>';
@@ -854,7 +854,7 @@ function initGap(){
         +'<td style="color:var(--muted)">'+(d.close||'—')+'</td>'
         +'</tr>';
     }).join('')
-    :'<tr><td colspan="4" class="empty">No won deals</td></tr>';
+    :'<tr><td colspan="4" class="empty">No signed deals</td></tr>';
 
   // Lost 2026
   document.getElementById('lost-count-gap').textContent=LOST.length+' deals';
